@@ -1,0 +1,12 @@
+-Ikernel
+-Ikernel/src
+-Ikernel/miniefi
+-Ikernel/public/usr/include
+-fno-common
+-mkernel
+-fno-builtin
+-fno-common
+-fno-stack-protector
+-fpic
+-fshort-wchar
+-nostdlib

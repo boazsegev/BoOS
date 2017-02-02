@@ -1,0 +1,10 @@
+tmp/
+scraps/
+.vagrant/
+ubuntu-xenial-16.04-cloudimg-console.log
+mtoc
+ovmf_debug.log
+OVMF.fd
+Vagrantfile
+
+UEFI Spec 2_6.pdf
