@@ -23,5 +23,6 @@ Resources I read through or used:
 * [A x64 OS #1: UEFI (Blog post for hello world kernel)](https://kazlauskas.me/entries/x64-uefi-os-1.html)
 * [BIOS Interrupt table](https://en.wikipedia.org/wiki/BIOS_interrupt_call#Interrupt_table)
 * [WikiBook X86 Assembly](https://en.wikibooks.org/wiki/X86_Assembly)
+* [QEMU emulation](http://www.qemu.org) - I use this for loading and testing the kernel.
 * [tianocore](http://www.tianocore.org) EDK II package - for the OVMF testing UEFI boot loader.
 * [OpenSource Apple](https://opensource.apple.com) used to convert MachO to a UEFI compliant PE.
