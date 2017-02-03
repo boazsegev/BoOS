@@ -6,7 +6,7 @@ I rewrote the UEFI headers from the specification (UEFI Specs. v.2.6) so that th
 
 This project requires `mtoc` to finish compilation (converts the MachO executable to a Portable Executable format with the EFI required header). You can compile it as part of the developer tools from [OpenSource Apple](https://opensource.apple.com).
 
-Testing is performed using [OVMF](http://www.tianocore.org/ovmf/), which is part of the [tianocore](http://www.tianocore.org) EDK II package.
+Testing is performed using [QEMU emulation](http://www.qemu.org) together with the [OVMF boot-loader](http://www.tianocore.org/ovmf/), which is part of the [tianocore](http://www.tianocore.org) EDK II package.
 
 My goals:
 
@@ -14,7 +14,7 @@ My goals:
 * Get `clang` to run on BoOS.
 * Slowly work my way towards and implement some core POSIX features.
 
-To recycle this work (just use UEFI headers and boot a hello world type application), keep just the `makefiles` folder, the `makefile` file and the `kernel` folder. From the `kernel` folder you can delete everything except the UEFI headers and write your own code into `start.c`.
+You can use the [boilerplate version](https://github.com/boazsegev/BoOS/tree/v.0.0.0) if you want to start your own kernel and OS using macOS and `clang` for your development environment. However, the UEFI headers might have been updated since then, so you might want to copy these from the latest version.
 
 Resources I read through or used:
 
