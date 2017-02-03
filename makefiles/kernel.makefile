@@ -17,10 +17,12 @@ KERNEL_OBJECTS:=$(foreach source, $(KERNEL_SOURCES), $(addprefix $(OUTROOT)/, $(
 KERNEL_CFLAGS_COMMON= -target x86_64--macho \
 											-ffreestanding -flto \
 											-fno-exceptions -fno-rtti \
+											-g0 -nostdlib \
 											-std=c11
 											# -iquote src/ \
 											# -fno-builtin -fno-common -mkernel \
 											# -mno-red-zone \
+											# -nobuiltininc \
 											# -fno-stack-protector \
 											# -ffreestanding -flto \
 											# -fno-exceptions -fno-rtti \
@@ -35,16 +37,8 @@ KERNEL_LDFLAGS= -e _efi_main \
 								-pagezero_size 0x0 \
 								-image_base 0x1000 \
 								-mmacosx-version-min=`sw_vers -productVersion` \
+								-Wl,-macosx_version_min,`sw_vers -productVersion` \
 								-arch x86_64
-KERNEL_LDFLAGS2= -e _efi_main \
-								-static \
-								-pie \
-								-pagezero_size 0x0 \
-								-image_base 0x1000 \
-								-macosx_version_min `sw_vers -productVersion` \
-								-arch x86_64
-								 # -u _memset -u ___bzero \
-								# -shared
 
 KERNEL_CFLAGS=  -emit-llvm \
 								-nobuiltininc \
@@ -64,7 +58,6 @@ $(OUTROOT)/$(KERNEL_ROOT)/%.o : $(KERNEL_ROOT)/%.c
 
 .PHONY : .compile_kernel
 .compile_kernel: $(KERNEL_OBJECTS)
-	# @ld $(KERNEL_LDFLAGS2) -o $(OUTROOT)/unstripped.efi $^
 	@$(CC) $(CFLAGS) $(KERNEL_CFLAGS_COMMON) $(KERNEL_LDFLAGS) -o $(OUTROOT)/unstripped.efi $^
 
 
@@ -73,29 +66,3 @@ $(OUTROOT)/$(KERNEL_ROOT)/%.o : $(KERNEL_ROOT)/%.c
 	-@echo "Starting to create the kernel."
 	-@mkdir -p $(KERNEL_OUTTREE)
 	-@mkdir -p $(SYSROOT_OUT)/$(KERNEL_EFI_BOOT_FOLDER)
-
-
-# cl /c /Zl
-
-# EFI_STATUS main(
-#   EFI_HANDLE ImageHandle,
-#   EFI_SYSTEM_TABLE *SystemTable
-# )
-# typedef struct _EFI_SYSTEM_TABLE {
-#   EFI_TABLE_HEADER                Hdr;
-#   CHAR16                          *FirmwareVendor;
-#   UINT32                          FirmwareRevision;
-#
-#   EFI_HANDLE                      ConsoleInHandle;
-#   SIMPLE_INPUT_PROTOCOL           *ConIn;
-#   EFI_HANDLE                      ConsoleOutHandle;
-#   SIMPLE_TEXT_OUTPUT_PROTOCOL     *ConOut;
-#   EFI_HANDLE                      StandardErrorHandle;
-#   SIMPLE_TEXT_OUTPUT_PROTOCOL     *StdErr;
-#
-#   EFI_RUNTIME_SERVICES            *RuntimeServices;
-#   EFI_BOOT_SERVICES               *BootServices;
-#
-#   UINTN                           NumberOfTableEntries;
-#   EFI_CONFIGURATION_TABLE         *ConfigurationTable;
-# } EFI_SYSTEM_TABLE;
