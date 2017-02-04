@@ -23,5 +23,11 @@ _Static_assert(sizeof(void *) == 8, "void * != 64 bits");
 typedef unsigned long long uintptr_t;
 typedef long long intptr_t;
 _Static_assert(sizeof(void *) == 8, "intptr_t != 64 bits");
+typedef uintptr_t size_t;
+typedef intptr_t ssize_t;
+
+#ifndef NULL
+#define NULL ((void *)0x00)
+#endif
 
 #endif

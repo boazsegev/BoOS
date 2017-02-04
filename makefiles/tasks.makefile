@@ -21,6 +21,8 @@ run: | default
 
 .PHONY : debug
 debug: | default
+	@echo "When using lldb, use the command: gdb-remote 1234"
+	@echo ""
 	@qemu-system-x86_64 -drive if=pflash,file=OVMF.fd,format=raw -debugcon file:ovmf_debug.log \
 											-global isa-debugcon.iobase=0x402 -d guest_errors,cpu_reset,in_asm -S -s -no-reboot \
 											-drive file=$(OUTROOT)/boos.iso,format=raw

@@ -2,6 +2,8 @@
 .PHONY : default
 default: | clean build
 
+# clang is our compiler of choice.
+CC?=clang
 # output folder
 OUTROOT:=tmp
 # sysroot for output
@@ -19,4 +21,4 @@ RECURSIVE_COPY2SYSROOT?=
 # Architecture
 ARCH?=x64
 # stuff to define
-DEFINE?=
+DEFINE?= DEBUG=1
