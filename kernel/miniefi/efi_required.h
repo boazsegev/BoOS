@@ -1,3 +1,4 @@
+#pragma once
 #ifndef H_EFI_REQUIRED_H
 #define H_EFI_REQUIRED_H
 

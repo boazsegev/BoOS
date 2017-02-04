@@ -1,3 +1,4 @@
+#pragma once
 #ifndef H_EFI_VIRTUAL_MEM_H
 #define H_EFI_VIRTUAL_MEM_H
 

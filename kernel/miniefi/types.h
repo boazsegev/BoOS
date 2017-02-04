@@ -1,3 +1,4 @@
+#pragma once
 #ifndef TYPES_H
 #define TYPES_H
 
@@ -6,8 +7,8 @@ typedef unsigned char uint8_t;
 typedef char int8_t;
 _Static_assert(sizeof(int8_t) == 1, "int8_t != 8 bits");
 typedef unsigned short uint16_t;
-typedef uint16_t char16_t;
 typedef short int16_t;
+typedef uint16_t char16_t;
 _Static_assert(sizeof(char16_t) == 2, "char16_t != 16 bits");
 typedef unsigned int uint32_t;
 typedef int int32_t;
