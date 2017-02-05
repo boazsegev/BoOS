@@ -1,6 +1,6 @@
 KERNEL_ROOT:=kernel
 #prepare Kernel Object List
-KERNEL_SUBFOLDERS:= src kernel
+KERNEL_SUBFOLDERS:= src miniefi
 # public kernel include files
 INCLUDE+= $(KERNEL_ROOT)/public/usr/include/
 # Add kernel includes to the mix
