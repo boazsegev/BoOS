@@ -1,6 +1,7 @@
+# The root folder for kernel 
 KERNEL_ROOT:=kernel
-#prepare Kernel Object List
-KERNEL_SUBFOLDERS:= src miniefi
+# prepare Kernel Object List
+KERNEL_SUBFOLDERS:= src
 # public kernel include files
 INCLUDE+= $(KERNEL_ROOT)/public/usr/include/
 # Add kernel includes to the mix
@@ -31,7 +32,7 @@ KERNEL_CFLAGS_COMMON= -target x86_64--macho \
 											# -target x86_64-pc-win32-elf
 											# -target x86_64-pc-mingw32-elf
 											# -target x86_64--macho
-KERNEL_LDFLAGS= -e _efi_main \
+KERNEL_LDFLAGS= -e ___efi_main \
 								-static \
 								-fpie \
 								-pagezero_size 0x0 \
@@ -46,6 +47,7 @@ KERNEL_CFLAGS=  -emit-llvm \
 								-fshort-wchar \
 								-DHAVE_USE_MS_ABI
 
+KERNEL_CFLAGS+= $(foreach dir,$(KERNEL_TREE),$(addprefix -I, $(dir)))
 # the result
 .PHONY : build_kernel
 build_kernel: | .pre_build_kernel .compile_kernel

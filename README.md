@@ -27,3 +27,4 @@ Resources I read through or used:
 * [tianocore](http://www.tianocore.org) EDK II package - for the OVMF testing UEFI boot loader.
 * [OpenSource Apple](https://opensource.apple.com) used to convert MachO to a UEFI compliant PE.
 * There's an [MIT course](https://pdos.csail.mit.edu/6.828/2016/overview.html) with an [educational OS project](https://github.com/mit-pdos/xv6-public) I hadn't read yet.
+* [Github book listing for OS development](https://github.com/vhf/free-programming-books/blob/master/free-programming-books.md#operating-systems).

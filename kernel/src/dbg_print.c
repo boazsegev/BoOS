@@ -17,8 +17,6 @@ void dbg_print(char16_t *str, ...) {
       u'0', u'1', u'2', u'3', u'4', u'5', u'6', u'7',
       u'8', u'9', u'A', u'B', u'C', u'D', u'E', u'F',
   };
-  if (k_system_resources.ST == NULL)
-    return;
   va_list args;
   char16_t buff[512];
   uint16_t pos = 0;
@@ -26,8 +24,7 @@ void dbg_print(char16_t *str, ...) {
   while (*str) {
     if (pos >= 512) {
       buff[pos] = 0;
-      k_system_resources.ST->ConOut->OutputString(k_system_resources.ST->ConOut,
-                                                  buff);
+      k_write2console(buff);
       pos = 0;
     }
     if (*str == u'%') {
@@ -38,8 +35,7 @@ void dbg_print(char16_t *str, ...) {
         while (*p) {
           if (pos >= 511) {
             buff[pos] = 0;
-            k_system_resources.ST->ConOut->OutputString(
-                k_system_resources.ST->ConOut, buff);
+            k_write2console(buff);
             pos = 0;
           }
           buff[pos++] = *p;
@@ -50,8 +46,7 @@ void dbg_print(char16_t *str, ...) {
       case u'p': {
         if (pos >= 511) {
           buff[pos] = 0;
-          k_system_resources.ST->ConOut->OutputString(
-              k_system_resources.ST->ConOut, buff);
+          k_write2console(buff);
           pos = 0;
         }
         buff[pos++] = u'0';
@@ -66,8 +61,7 @@ void dbg_print(char16_t *str, ...) {
   case (sig): {                                                                \
     if (pos >= 511) {                                                          \
       buff[pos] = 0;                                                           \
-      k_system_resources.ST->ConOut->OutputString(                             \
-          k_system_resources.ST->ConOut, buff);                                \
+      k_write2console(buff);                                                   \
       pos = 0;                                                                 \
     }                                                                          \
     _type p = va_arg(args, _type);                                             \
@@ -111,7 +105,6 @@ void dbg_print(char16_t *str, ...) {
   va_end(args);
   buff[pos] = 0;
   if (pos)
-    k_system_resources.ST->ConOut->OutputString(k_system_resources.ST->ConOut,
-                                                buff);
+    k_write2console(buff);
 }
 #endif

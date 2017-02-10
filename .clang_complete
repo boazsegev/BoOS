@@ -1,7 +1,9 @@
 -Ikernel
 -Ikernel/src
--Ikernel/miniefi
 -Ikernel/public/usr/include
+
+-DDEBUG=1
+
 -fno-common
 -mkernel
 -fno-builtin

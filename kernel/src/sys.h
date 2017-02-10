@@ -1,38 +1,22 @@
 #pragma once
 #ifndef H_KERNEL_SYS_H
 #define H_KERNEL_SYS_H
-#include "efi.h"
 /* *****************************************************************************
+This should be rewritten as an UEFI abstraction, so that UEFI system calls to
+Runtime Services are protected (see the Sepcs, table 32, section 7.1, page 284
+of the PDF).
+
 EFI Helper to map the system resources into an accessible common struct for
 safe-keeping.
 
 Specifically this reads and stores the memory map.
 ***************************************************************************** */
+#include "types.h"
 
 /**
-The system resources data
+This function will write a NUL terminated string to the console.
 */
-typedef struct {
-  EFI_SYSTEM_TABLE *ST;
-  struct {
-    uintptr_t map_size;
-    EFI_MEMORY_DESCRIPTOR *map;
-    uintptr_t map_key;
-    uintptr_t descriptor_size;
-    uint32_t descriptor_Version;
-  } memmap;
-} k_system_resources_s;
-
-extern k_system_resources_s k_system_resources;
-/**
-Loads the data from the UEFI interface to a k_system_resources_s struct.
-
-Be aware that some memory is allocated during the process. Free the memory
-before destroying the struct object (of just keep the data for as long as the OS
-is running).
-*/
-ssize_t k_system_init(EFI_SYSTEM_TABLE *SystemTable);
-void k_free_system_data(void);
+void k_write2console(char16_t *str);
 
 #if DEBUG == 1
 /* *****************************************************************************

@@ -8,3 +8,7 @@ OVMF.fd
 Vagrantfile
 
 UEFI Spec 2_6.pdf
+
+specs_and_manuals/chapter_01.pdf
+
+specs_and_manuals/The little book about OS development.pdf
