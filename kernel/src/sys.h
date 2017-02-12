@@ -1,4 +1,3 @@
-#pragma once
 #ifndef H_KERNEL_SYS_H
 #define H_KERNEL_SYS_H
 /* *****************************************************************************
@@ -17,6 +16,15 @@ Specifically this reads and stores the memory map.
 This function will write a NUL terminated string to the console.
 */
 void k_write2console(char16_t *str);
+
+/**
+This function returns the address for the EFI_SYSTEM_TABLE.
+*/
+void *k_uefi_system_table(void);
+/**
+This function returns the address for the EFI_HANDLE.
+*/
+void *k_uefi_handle(void);
 
 #if DEBUG == 1
 /* *****************************************************************************
