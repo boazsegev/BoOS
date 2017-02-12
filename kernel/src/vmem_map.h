@@ -1,20 +1,30 @@
-#ifndef H_VMEM_MAP_H
+#ifndef KH_VMEM_MAP_H
 /* *****************************************************************************
 This will contain the object oriented interface related to memory map
 operations.
 ***************************************************************************** */
-#define H_VMEM_MAP_H
+#define KH_VMEM_MAP_H
 #include "types.h"
 
+#define MEMORY_PAGE_SIZE 4096
+#define MEMORY_PAGE_BIT_SHIFT 12
 typedef struct vmem_map_s *vmem_map_pt;
 
 /**
 Creates the first (initial) memory map for the kernel.
 
-Returns NULL on failure, otherwise returns a memory map for direct access memory
+Returns NULL on failure, otherwise returns the root memory map
 (no address translation).
 */
 vmem_map_pt vmemory_map_initialize(void);
+/**
+Finalizes initialization of the memory map by reclaiming the memory used by the
+UEFI Boot Services.
+
+Returns NULL on failure, otherwise returns the root memory map
+(no address translation).
+*/
+vmem_map_pt vmemory_map_init_runtime(void);
 /**
 Copies an existing memory map for a new process. Returns the copy.
 */
