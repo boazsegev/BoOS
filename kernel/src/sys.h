@@ -10,6 +10,7 @@ safe-keeping.
 
 Specifically this reads and stores the memory map.
 ***************************************************************************** */
+#include "dbg_print.h"
 #include "types.h"
 
 /**
@@ -25,26 +26,5 @@ void *k_uefi_system_table(void);
 This function returns the address for the EFI_HANDLE.
 */
 void *k_uefi_handle(void);
-
-#if DEBUG == 1
-/* *****************************************************************************
-A few helper rutines for debugging...
-***************************************************************************** */
-
-/**
-`dbg_print` provides a very simple "printf"-like console printing facilities,
-with support being limited to:
-
-* %s - a string object.
-* %i, %u - int32_t and uint32_t respectively, printed as decimal numbers.
-* %li, %lu - int64_t and uint64_t respectively, printed as decimal numbers.
-* %p - 64bit numbers and pointers printed in hex notation.
-
-*/
-void dbg_print(char16_t *str, ...);
-#else
-/** noop, unless DEBUG == 1 is defined. */
-#define dbg_print(...)
-#endif
 
 #endif

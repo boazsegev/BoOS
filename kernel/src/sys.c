@@ -1,6 +1,8 @@
 #include "miniefi/efi.h"
 #include "vmem_map.h"
 
+#include "dbg_print.h"
+
 // #include "sys.h"
 
 /* *****************************************************************************
@@ -12,21 +14,6 @@ typedef struct {
 } k_uefi_s;
 
 static k_uefi_s k_uefi;
-
-/* *****************************************************************************
-Debug helpers
-***************************************************************************** */
-#if DEBUG == 1
-#pragma weak dbg_print
-void dbg_print(char16_t *str, ...) {
-  (void)str;
-  return;
-}
-void print_memap(void);
-#else
-#define dbg_print(...)
-#define print_memap()
-#endif
 
 /* *****************************************************************************
 After the UEFI data is loaded and handled, the initialization will call the

@@ -4,21 +4,11 @@
 
 #include "spinlock.h"
 
-/* *****************************************************************************
-Debug helpers
-***************************************************************************** */
 #if DEBUG == 1
-#pragma weak dbg_print
-void dbg_print(char16_t *str, ...) {
-  (void)str;
-  return;
-}
 static void print_memap(vmem_map_pt map);
 #else
-#define dbg_print(...)
-#define print_memap(map)
+#define print_memap(...)
 #endif
-
 /* *****************************************************************************
 System data storage
 ***************************************************************************** */
@@ -44,115 +34,6 @@ static struct vmem_map_s vmap_original;
 /* *****************************************************************************
 System memory storage
 ***************************************************************************** */
-
-/**
-A memory segment.
-*/
-typedef struct vmem_segment_s *vmem_segment_pt;
-struct vmem_segment_s {
-  /** The first byte outside the memory segment:
-    *    total_size = vmem_segment_pt->end - (uintptr_t)vmem_segment_pt
-    */
-  uintptr_t end;
-  /** The previous segment in the "free list" */
-  vmem_segment_pt prev;
-  /** The next segment in the "free list" */
-  vmem_segment_pt next;
-};
-
-/**
-The memory "free list".
-*/
-struct {
-  vmem_segment_pt available;
-  vmem_segment_pt reserved;
-  spn_lock_i lock;
-  spn_lock_i klock;
-} vmem_free_list;
-
-/**
-Defragments a memory free list.
-*/
-static inline void vmem_defragment_list(vmem_segment_pt list[],
-                                        spn_lock_i *lock) {
-  vmem_segment_pt *pos = list;
-  vmem_segment_pt node;
-  spn_lock(lock);
-  while (*pos) {
-    node = list[0];
-    while (node) {
-      if (node == *pos) {
-        node = node->next;
-        continue;
-      }
-      if (
-          /* these are connected segments */
-          ((uintptr_t)node == (*pos)->end)
-          /* or these segments overlap.
-           * (this might be an error except during initialization)
-           */
-          || ((uintptr_t)node < (*pos)->end && node > (*pos))
-          /* It could have been re-written as: */
-          /* ((uintptr_t)node <= (*pos)->end && node > (*pos)) */
-          ) {
-        /* update range if applicable (overlapping segments might be different)
-         */
-        if (node->end > (*pos)->end)
-          (*pos)->end = node->end;
-        /* remove from the list (shouldn't edit *pos because we only go up) */
-        if (node->next)
-          node->next->prev = node->prev;
-        if (node->prev)
-          node->prev->next = node->next;
-      }
-    }
-    pos = &((*pos)->next);
-  }
-  spn_unlock(lock);
-}
-
-/**
-Defragments a memory free list.
-*/
-static inline __attribute__((unused)) void vmem_defragment_free(void) {
-  vmem_defragment_list(&vmem_free_list.available, &vmem_free_list.lock);
-  vmem_defragment_list(&vmem_free_list.reserved, &vmem_free_list.klock);
-}
-
-/**
-Adds a memory segment to the free list.
-`addr` is the address of the memory segment.
-`pages` is the number of pages to add.
-*/
-static inline void __attribute__((unused))
-vmem_add2free(void *addr, size_t pages) {
-  vmem_segment_pt seg = addr;
-  seg->end = ((uintptr_t)addr + (pages << MEMORY_PAGE_BIT_SHIFT));
-  seg->prev = NULL;
-  spn_lock(&vmem_free_list.lock);
-  seg->next = vmem_free_list.available;
-  if (vmem_free_list.available)
-    vmem_free_list.available->prev = seg;
-  vmem_free_list.available = seg;
-  spn_unlock(&vmem_free_list.lock);
-}
-/**
-Adds a memory segment to kernel's reserved list.
-`addr` is the address of the memory segment.
-`pages` is the number of pages to add.
-*/
-static inline void __attribute__((unused))
-vmem_add2reserved(void *addr, size_t pages) {
-  vmem_segment_pt seg = addr;
-  seg->end = ((uintptr_t)addr + (pages << MEMORY_PAGE_BIT_SHIFT));
-  seg->prev = NULL;
-  spn_lock(&vmem_free_list.klock);
-  seg->next = vmem_free_list.reserved;
-  if (vmem_free_list.reserved)
-    vmem_free_list.reserved->prev = seg;
-  vmem_free_list.reserved = seg;
-  spn_lock(&vmem_free_list.klock);
-}
 
 /* *****************************************************************************
 Initialization
